@@ -22,19 +22,19 @@ Ansible modules for interacting with HDFS.  Provides functionality similar to th
       apt:
         name: python-pip
         state: latest
-
+ 
     - name: Install hdfs3 python HDFS client
       become: yes
       pip:
         name: hdfs3
         state: latest
-
+ 
     - name: Add libhdfs3 PPA
       become: yes
       apt_repository:
         repo: deb https://dl.bintray.com/wangzw/deb trusty contrib
         update-cache: yes
-
+ 
     - name: Install libhdfs3 dependencies
       become: yes
       apt:
@@ -44,7 +44,7 @@ Ansible modules for interacting with HDFS.  Provides functionality similar to th
         - libgsasl7
         - libntlm0
         - libprotobuf8
-    
+     
     - name: Install libhdfs3 and libhdfs3-dev
       become: yes
       apt:
@@ -54,7 +54,7 @@ Ansible modules for interacting with HDFS.  Provides functionality similar to th
       with_items:
         - libhdfs3
         - libhdfs3-dev
-
+ 
     #
     # Usage example
     #

@@ -24,7 +24,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: file
+module: hdfsfile
 version_added: "2.2"
 short_description: Sets attributes of files in HDFS.
 description:
@@ -68,26 +68,30 @@ options:
 
 EXAMPLES = '''
 # change file ownership, group and mode. When specifying mode using octal numbers, first digit should always be 0.
-- file:
+- hdfsfile:
+    namenode_host: namenode.my.org
     path: /test/status
     owner: foo
     group: foo
     mode: 0644
 
 # touch a file, using symbolic modes to set the permissions (equivalent to 0644)
-- file:
+- hdfsfile:
+    namenode_host: namenode.my.org
     path: /test/status
     state: touchz
     mode: "u=rw,g=r,o=r"
 
 # touch the same file, but add/remove some permissions
-- file:
+- hdfsfile:
+    namenode_host: namenode.my.org
     path: /test/status
-    state: touch
+    state: touchz
     mode: "u+rw,g-wx,o-rwx"
 
 # create a directory if it doesn't exist
-- file:
+- hdfsfile:
+    namenode_host: namenode.my.org
     path: /test/some_directory
     state: directory
     mode: 0755
@@ -722,8 +726,8 @@ def main():
         module.fail_json(msg="Failed to import required python module: hdfs3", details=str(HAS_HDFS3_ERROR))
 
     # Initialise HDFS client
+    params = module.params
     try:
-        params = module.params
         hdfs_client = hdfs3.HDFileSystem(host=params['namenode_host'],
                                          port=params['namenode_port'],
                                          user=params['effective_user'])
